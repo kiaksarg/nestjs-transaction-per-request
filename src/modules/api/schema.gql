@@ -1,0 +1,152 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Group {
+  id: ID!
+  name: String!
+  locations: [Post]
+  active: Boolean!
+}
+
+type Post {
+  id: ID!
+  title: String!
+  content: String!
+  groups: [Group]
+  active: Boolean!
+}
+
+type PostList {
+  items: [Post]
+  totalItems: Int!
+}
+
+type GroupList {
+  items: [Group]
+  totalItems: Int!
+}
+
+type Query {
+  sayHello: String!
+  post(id: ID!): Post!
+  posts(options: PostListQueryInput!): PostList!
+  groups(options: GroupListQueryInput!): GroupList!
+}
+
+input PostListQueryInput {
+  skip: Int
+  take: Int!
+
+  """Works only with sort by id"""
+  after: ID
+
+  """Works only with sort order by id"""
+  before: ID
+  operator: OperatorEnum
+  sort: PostSortInput
+  filter: PostFilterInput
+
+  """a random text to reset the request."""
+  timestamp: String
+}
+
+enum OperatorEnum {
+  And
+  Or
+}
+
+input PostSortInput {
+  id: SortOrderEnum
+  title: SortOrderEnum
+  createdAt: DateOperatorsInput
+  updatedAt: DateOperatorsInput
+}
+
+enum SortOrderEnum {
+  ASC
+  DESC
+}
+
+input DateOperatorsInput {
+  eq: DateTime
+  before: DateTime
+  after: DateTime
+  between: DateRangeInput
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+input DateRangeInput {
+  start: DateTime!
+  end: DateTime!
+}
+
+input PostFilterInput {
+  id: IdOperatorsInput
+  active: Boolean
+  title: StringOperatorsInput
+  content: StringOperatorsInput
+}
+
+input IdOperatorsInput {
+  eq: ID
+  notEq: ID
+  in: [ID!]
+  notIn: [ID!]
+}
+
+input StringOperatorsInput {
+  eq: String
+  notEq: String
+  contains: String
+  notContains: String
+  search: String
+  in: [String!]
+  notIn: [String!]
+  regex: String
+}
+
+input GroupListQueryInput {
+  skip: Int
+  take: Int!
+
+  """Works only with sort by id"""
+  after: ID
+
+  """Works only with sort order by id"""
+  before: ID
+  operator: OperatorEnum
+  sort: GroupSortInput
+  filter: GroupFilterInput
+
+  """a random text to reset the request."""
+  timestamp: String
+}
+
+input GroupSortInput {
+  id: SortOrderEnum
+  name: SortOrderEnum
+  createdAt: DateOperatorsInput
+  updatedAt: DateOperatorsInput
+}
+
+input GroupFilterInput {
+  id: IdOperatorsInput
+  active: Boolean
+  name: StringOperatorsInput
+}
+
+type Mutation {
+  createPostTransactional(postCreateInput: PostCreateInput!): Post!
+  createPostWithoutTransaction(postCreateInput: PostCreateInput!): Post!
+}
+
+input PostCreateInput {
+  id: ID
+  title: String
+  content: String
+}

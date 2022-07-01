@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "resolveJsonModule": true,
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "paths": {
+      "@common/*": ["src/common/*"],
+      "@database/*": ["src/database/*"],
+      "@config": ["src/config"],
+      "@utils": ["src/utils"],
+      "@modules/*": ["src/modules/*"],
+      "@identity": ["src/modules/identity/"],
+      "@commonModule": ["src/modules/common/"]
+      // "@auth": ["src/modules/auth/"]
+    },
+    "incremental": true
+  }
+}

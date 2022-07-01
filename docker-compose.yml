@@ -1,0 +1,59 @@
+version: "3.8"
+services:
+    api:
+        container_name: api
+        build:
+            dockerfile: Dockerfile
+            context: .
+        depends_on:
+            - postgres
+        environment:
+            DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DATABASE}
+            NODE_ENV: development
+            PORT: ${APP_PORT}
+        ports:
+            - "4000:${APP_PORT}"
+
+    postgres:
+        container_name: postgres
+        image: postgres:12-alpine
+        restart: always
+        container_name: postgres
+        ports:
+            - ${POSTGRES_PORT}:5432
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: ${POSTGRES_DATABASE}
+            PGDATA: /var/lib/postgresql/data
+        healthcheck:
+            test:
+                [
+                    'CMD-SHELL',
+                    'psql postgres://$${POSTGRES_USER}:$${POSTGRES_PASSWORD}@localhost:5432/$${POSTGRES_DB} || exit 1'
+                ]
+        volumes:
+            - ./data/postgres:/var/lib/postgresql/data
+    pgadmin:
+        links:
+        - postgres:postgres
+        container_name: pgadmin
+        image: dpage/pgadmin4
+        ports:
+        - "4000:80"
+        volumes:
+        - /data/pgadmin:/root/.pgadmin
+        env_file:
+        - docker.env
+        networks:
+        - postgres
+
+volumes:
+  pgdata:
+networks:
+    postgres:
+      driver: bridge
+
+
+    # env_file:
+    #     - database.env
